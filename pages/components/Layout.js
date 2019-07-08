@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Navbar from './Navbar.js';
+import Navbar from './Navbar';
 
 const Layout = (props) => (
   <div>
