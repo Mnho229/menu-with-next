@@ -1,11 +1,15 @@
 import {useState} from 'react';
 import getConfig from 'next/config';
-const { serverRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
+import { parseCookies } from 'nookies';
 
 import Layout from './components/Layout'
 import fetch from 'isomorphic-unfetch';
 
-const Content = (props) => {
+const Content = (props, ctx) => {
+  let user = parseCookies(ctx);
+
+  console.log(user);
 
   console.log(props.data.name + " Boi");
   return (
@@ -32,11 +36,25 @@ const Content = (props) => {
 
 };
 
-Content.getInitialProps = async () => {
-  const {APP_URL} = serverRuntimeConfig;
-  
-  const res = await fetch(`${APP_URL}/api/auth`);
-  const data = await res.json();
+Content.getInitialProps = async (ctx) => {
+  //Use Destructuring to grasp JSON, then maybe remove cookie or
+  //utilize for something else
+
+  console.log(publicRuntimeConfig);
+  const { APP_URL } = publicRuntimeConfig;
+  let data = {};
+  try {
+    const res = await fetch(`${APP_URL}/api/auth`, {
+      credentials: "include",
+      headers: {
+        cookie: JSON.stringify(parseCookies(ctx)),
+      }
+    });
+    data = await res.json();
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
   return {
     data: data
   };
