@@ -1,25 +1,47 @@
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+
 import Layout from './components/Layout';
+
+import { Cookies } from 'react-cookie';
 import fetch from 'isomorphic-unfetch';
 
-import Prices from './components/Prices';
-import { setCookie } from 'nookies';
+const Index = (props) => {
+  const cookies = new Cookies();
 
-const Index = (props) => (
-  <Layout>
-    <div>
-      <h1>Welcome to the world</h1>
-      <p>you are now being waaaaaatched</p>
-    </div>
+  const pingEm = async (e) => {
+    const {APP_URL} = publicRuntimeConfig;
+    const token = cookies.get('token');
+    console.log(token);
+    try {
+      const res = await fetch(`${APP_URL}/api/auth/ping`, {
+        headers: { 'authorization': token.token }
+      });
+      const data = await res.json();
+      console.log(data);
+    }
+    catch (err) { console.log(err); }
+  };
+
+  return (
+    <Layout>
+      <div>
+        <h1>Welcome to the world</h1>
+        <p>you are now being waaaaaatched</p>
+        <div className="jwt__test" onClick={pingEm}>Verify the JWT!</div>
+      </div>
+
+      <style jsx="true">{`
+        .jwt__test {
+          width: 5rem;
+          height: 5rem;
+          cursor: pointer;
+          background-color: gray;
+        }
+      `}</style>
   </Layout>
-);
+  )
 
-Index.getInitialProps = async function(ctx) {
-  setCookie(ctx, 'Eye', 'Subject Not Suspicious',  {
-    maxAge: 30 * 24 * 60,
-    path: '/'
-  });
-
-  return {};
-}
+};
 
 export default Index;
