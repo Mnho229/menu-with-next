@@ -29,7 +29,7 @@ const Navbar = () => {
       <ul>
         <li><Link href="/"><a>Home</a></Link></li>
         <li><Link href="/about"><a>About</a></Link></li>
-        <li><Link href="/content"><a>Content</a></Link></li>
+        <li><Link href="/content/1"><a>Content</a></Link></li>
         <li><a onClick={handleLogin} >Log In</a></li>
       </ul>
 

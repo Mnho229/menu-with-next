@@ -4,7 +4,7 @@ const NavItem = (props) => {
   return (
     <li className="nav-items">
       <Link href={`/content/${props.id}`}>
-        <a>{props.id}</a>
+        <a>{props.label}</a>
       </Link>
     
     {style()}    

@@ -3,27 +3,37 @@ import { useRouter } from 'next/router';
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
+import { Cookies } from 'react-cookie';
+const cookies = new Cookies();
+
 import Layout from '../../components/Layout'
 import fetch from 'isomorphic-unfetch';
 import NavItem from '../../components/NavItem';
 
 const Content = (props) => {
   const router = useRouter();
-  const { title } = router.query;
+  const { id } = router.query;
 
-  console.log(props.data.name + " Boi ");
+  const generateList  = () => {
+    console.log(props);
+    return props.data.map((value, index) => {
+      return (
+        <NavItem id={value.id} key={index} label={value.label} />
+      )
+    });
+  }
+
   return (
     <Layout>
       <div className="c-content">
         <section className="c-content__actual">
           <article className="c-content__article">
-            <h3>{title} a piece of my midn has been made up</h3>
+            <h3>{id} a piece of my midn has been made up</h3>
           </article>
         </section>
         <nav>
           <ul className="c-content__nav">
-            <NavItem id="1" />
-            <NavItem id="2" />
+            { generateList() }
           </ul>
         </nav>
       </div>
@@ -36,8 +46,14 @@ const Content = (props) => {
 
 Content.getInitialProps = async (ctx) => {
   const {APP_URL} = publicRuntimeConfig;
+  let data;
 
-  let data = {};
+  try {
+    const res = await fetch(`${APP_URL}/api/articles/list`);
+    data = await res.json();
+  } catch(e) {
+    console.log(e);
+  }
   
   return {
     data: data
