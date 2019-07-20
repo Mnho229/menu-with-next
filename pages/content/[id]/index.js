@@ -15,7 +15,6 @@ const Content = (props) => {
   const { id } = router.query;
 
   const generateList  = () => {
-    console.log(props);
     return props.data.map((value, index) => {
       return (
         <NavItem id={value.id} key={index} label={value.label} />
@@ -46,13 +45,18 @@ const Content = (props) => {
 
 Content.getInitialProps = async (ctx) => {
   const {APP_URL} = publicRuntimeConfig;
-  let data;
+  let data, data2;
 
   try {
     const res = await fetch(`${APP_URL}/api/articles/list`);
     data = await res.json();
+    const res2 = await fetch(`http://localhost:3000/api/articles/3`);
+    // data2 = await res2.json();
+    console.log(res2);
+    data2 = await res2.json();
+    console.log(data2);
   } catch(e) {
-    console.log(e);
+    console.log("Error", e);
   }
   
   return {
