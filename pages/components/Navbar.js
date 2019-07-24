@@ -3,11 +3,10 @@ const { publicRuntimeConfig } = getConfig();
 
 import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
-import { Cookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 
 const Navbar = () => {
-  const cookies = new Cookies();
-  // const [cookie, setCookie] = useState(cookies.get('token'));
+  const [cookie, setCookie] = useCookies();
 
   const handleLogin = async () => {
     const {APP_URL} = publicRuntimeConfig;
@@ -18,10 +17,8 @@ const Navbar = () => {
       token = await res.json();
     } catch (e) {
       console.log(e);
-      throw e;
     }
-    cookies.set('token', token);
-    // setCookie(token);
+    setCookie('token', token);
   }
 
   return (

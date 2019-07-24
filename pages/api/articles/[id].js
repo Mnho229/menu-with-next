@@ -3,6 +3,8 @@ import verify from '../auth/verify';
 import { useRouter } from 'next/router';
 
 export default function handle(req, res) {
+  const token = req.headers.authorization;
+  console.log('token', req.headers);
   const { query: { id } } = req;
   //Use req id to search for that particular object in the list
   let article;
@@ -10,9 +12,7 @@ export default function handle(req, res) {
     article = articles.find(x => x.id === `${id}`);
     if (typeof article === 'undefined') throw "Article is not found";
   } catch(e) {
-    //remember to pay attention to the status codes (like 204)
-    //It can change behavior
-    res.status(200).json({error: e});
+    res.status(204).json({error: e});
   }
 
   article.private === 'false' ? 
@@ -22,7 +22,4 @@ export default function handle(req, res) {
     res.status(403).json({
       "message": "Not Authorized"
     });
-  // verify(token) ?
-  // res.json({"msg": "ayyy all good"}) :
-  // res.json({"msg": "You shall not pass"});
 }

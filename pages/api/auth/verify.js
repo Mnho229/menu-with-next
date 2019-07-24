@@ -10,6 +10,7 @@ const verify = (token) => {
     var decoded = jwt.verify(token, jwtSecret);
     return true;
   } catch (err) {
+    console.log("error: ", err);
     return false;
   }
 }
