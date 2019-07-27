@@ -13,6 +13,8 @@ import Article from '../../components/Article';
 const Content = (props) => {
   //Certain time sensitive components should be kept to try/catch
   const [cookies, setCookie] = useCookies();
+  console.log(cookies.token);
+  // console.log(props.req);
 
   //Maybe move pulling the article to here or move cookie passing to layout
 
@@ -44,9 +46,12 @@ const Content = (props) => {
 };
 
 Content.getInitialProps = async (ctx) => {
+  const {cookie} = ctx.req.headers;
+  const token = cookie.slice(cookie.indexOf("token=") + "token=".length);
+  console.log(token);
   const {APP_URL} = publicRuntimeConfig;
   const { id } = ctx.query;
-  console.log(cookies);
+  // console.log(cookies);
   let data, article, error;
 
   //Nav List
@@ -77,7 +82,7 @@ Content.getInitialProps = async (ctx) => {
   return {
     data: data,
     article: article,
-    error: error
+    error: error,
   }
 }
 

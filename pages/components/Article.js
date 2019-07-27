@@ -18,7 +18,6 @@ const Article = (props) => {
   };
   
   const formatArticle = (article) => {
-    console.log(article);
     return (
       <>
         <h2>{article.title}</h2>

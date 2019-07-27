@@ -11,14 +11,15 @@ const Navbar = () => {
   const handleLogin = async () => {
     const {APP_URL} = publicRuntimeConfig;
   
-    let token = {};
+    let data = {};
     try {
       const res = await fetch(`${APP_URL}/api/auth/login`);
-      token = await res.json();
+      data = await res.json();
+      console.log(data);
     } catch (e) {
       console.log(e);
     }
-    setCookie('token', token);
+    setCookie('token', data.token);
   }
 
   return (
