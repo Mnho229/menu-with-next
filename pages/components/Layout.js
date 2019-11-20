@@ -1,9 +1,20 @@
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+
 import Head from 'next/head';
 import Navbar from './Navbar';
 import { CookiesProvider} from 'react-cookie';
+import fetch from 'isomorphic-unfetch';
+import { useEffect } from 'react';
+
 
 const Layout = (props) => {
   
+  // Testing ping.js with useEffect()
+  useEffect(() => {
+    testPing();
+  });
+
   return (
     <CookiesProvider>
       <Head>
@@ -16,3 +27,18 @@ const Layout = (props) => {
 }
 
 export default Layout;
+
+
+let testPing = async() => {
+  const { APP_URL } = publicRuntimeConfig;
+
+  let data = {};
+
+  try {
+    const res = await fetch(`${APP_URL}/api/auth/ping`);
+    data = await res.json();
+    console.log('ping data: ', data);
+  } catch(e) {
+    console.log('ping error: ', e);
+  }
+}
