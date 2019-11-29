@@ -37,7 +37,9 @@ const Navbar = () => {
         color: #fff;
         list-style: none;
         display: flex;
-        justify-content: flex-end
+        justify-content: flex-end;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
       }
       
       ul li {

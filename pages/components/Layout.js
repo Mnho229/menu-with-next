@@ -5,15 +5,10 @@ import Head from 'next/head';
 import Navbar from './Navbar';
 import { CookiesProvider} from 'react-cookie';
 import fetch from 'isomorphic-unfetch';
-import { useEffect } from 'react';
+import Timeout from './Timeout';
 
 
 const Layout = (props) => {
-  
-  // Testing ping.js with useEffect()
-  useEffect(() => {
-    testPing();
-  });
 
   return (
     <CookiesProvider>
@@ -22,6 +17,8 @@ const Layout = (props) => {
       </Head>
       <Navbar />
       {props.children}
+
+      <Timeout />
   </CookiesProvider>
   );
 }

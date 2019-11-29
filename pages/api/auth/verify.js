@@ -4,12 +4,14 @@ const jwtSecret = serverRuntimeConfig.secret;
 
 import jwt from 'jsonwebtoken';
 
+let stringDash = '-------------------------------------------';
+let decoded;
+
 const verify = (token) => {
-  let stringDash = '-------------------------------------------';
 
   try {
     console.log(stringDash + "VERIFYING" + stringDash);
-    var decoded = jwt.verify(token, jwtSecret);
+    decoded = jwt.verify(token, jwtSecret);
     return true;
   } catch (err) {
     console.log("error: ", err);
@@ -17,4 +19,6 @@ const verify = (token) => {
   }
 }
 
-export default verify;
+const getDecodedJWT = () => decoded;
+
+export {verify, getDecodedJWT};
